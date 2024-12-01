@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<body id="target">
+<style>
+
+.myButton {
+	box-shadow: 3px 3px 3px -1px #9e974d;
+	background-color:#e8ca36;
+	border-radius:7px;
+	border:1px solid #ff8c00;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Georgia;
+	font-size:17px;
+	font-weight:bold;
+	font-style:italic;
+	padding:8px 19px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #5c5229;
+}
+.myButton:hover {
+	background-color:#e3bd14;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}  
+
+hr {
+	border-width: 0px;
+}.myNota {
+	background-color:transparent;
+	border-radius:28px;
+	border:0px solid #ffffff;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:16px 31px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffffff;
+}
+.myNota:hover {
+	background-color:transparent;
+}
+.myNota:active {
+	position:relative;
+	top:1px;
+}
+
+
+</style>
+<center>
+<h1>Tarefa 11</h1>
+<p style="font-size: 18px;"><b>Bem vindo ao nosso jogo!<br>Vai ser sorteado um número entre 1 a 10, e o seu objetivo é adivinhar qual é número.</b></p>
+
+<label for "nome">Introduza o seu nome:</label>
+<input type="text" id="nome">
+<button onclick="nome()">Confirmar</button>
+<br>
+<label for "dicas">Quer jogar com dicas?</label>
+<input type="checkbox" id="dicas" onclick="ativardicas()">
+
+<p style="font-size: 18px;"><b>Para realizares apostas, terás de gastar parte do teu saldo.<br>Cada aposta vai te custar 10$.<br>Poderás carregar o teu saldo caso fiques a zeros.</b></p>
+<h1>Vamos Jogar!</h1>
+<p style="font-size: 18px;"><b>Vai ser sorteado um número entre 1 a 10! Tente a sua sorte e advinhe o número sorteado!</b><br>Escreva o número e clique no botão. Se precisares, podes usar uma dica antes de apostares, mas só tens uma!.</b></p>
+<input type="number" id="aposta" min="1" max="10">
+<button onclick="dica()" id="dica_btn" style="display: none;">Dica</button>
+<p style="font-size: 16px;"><b id="dica_escrita"></b></p>
+<hr>
+<p><b>
+	Saldo: <span id="saldo">50</span>
+</b></p>
+
+<button class="myButton" onclick="comparar(); tentativa()" id="butao">Apostar</button>
+
+<hr>
+<p style="font-size: 25px;"><b>Carregamento de Saldo</b></p>
+<p>Clique nas notas para carregar o valor que deseja.</p>
+<button onclick="nota1()" class="myNota"><img src="./imagens/nota1usavel.png" width="63px" height="33px"></button>
+<button onclick="nota5()" class="myNota"><img src="./imagens/nota5usavel.jpg" width="63px" height="33px"></button>
+<button onclick="nota10()" class="myNota"><img src="./imagens/nota10usavel.jpg" width="63px" height="33px"></button>
+<button onclick="nota20()" class="myNota"><img src="./imagens/nota20usavel.jpg" width="63px" height="33px"></button>
+<button onclick="nota50()" class="myNota"><img src="./imagens/nota50usavel.jpg" width="63px" height="33px"></button>
+
+<p style="font-size: 25px;"><b>Histórico</b></p>
+<p><b>
+	Número de Tentativas: <span id="tentativas">0</span>
+</b></p>
+<p><b id="tentativas_passadas"></b></p>
+
+<script>
+const x = Math.floor(Math.random() * 10) + 1
+const checkbox = document.getElementById("dicas")
+const dica_btn = document.getElementById("dica_btn")
+const valor_apostado = document.getElementById("aposta")
+const butao = document.getElementById("butao")
+
+function ativardicas() {
+if (checkbox.checked == true) {
+dica_btn.style.display = "block"
+} else {
+dica_btn.style.display = "none"
+}
+}
+
+function dica() {
+let a = parseInt(document.getElementById("aposta").value)
+dica_btn.disabled=true
+if (a <= x) {
+document.getElementById("dica_escrita").innerText=
+"O número é maior ou igual a " + a + "."
+} else if (a >= x) {
+document.getElementById("dica_escrita").innerHTML=
+"O número é menor ou igual a " + a + "."
+}
+}
+
+function nome() {
+    let nome = (document.getElementById("nome").value)
+    alert("Bem vindo " + nome + "! Boa sorte!")
+}
+
+function comparar() {
+    let a = parseInt(document.getElementById("aposta").value)
+	let nome = (document.getElementById("nome").value)
+	document.getElementById("tentativas_passadas").innerHTML=
+	"Última Tentativa: " + a
+	if (saldo.innerText < 10) {
+	alert("Não tem saldo suficiente para fazer uma aposta.")
+    } else if (x == a && checkbox.checked == true) {
+	DoAnimation("green", 700);
+	setTimeout(function () {
+    alert("Parabéns " + nome + "! A tua aposta está certa! Foram feitas " + Number(tentativas.innerText) + " tentativas e sobraram-te " + Number(saldo.innerText) + "$!");
+    }, 1900);
+	const vitoria = 18
+	const saldo_total = Number(saldo.innerText) + Number(vitoria)
+	saldo.innerText = saldo_total
+    valor_apostado.disabled=true
+	butao.disabled=true
+	} else if (x == a && checkbox.checked == false) {
+	DoAnimation("green", 700);
+	setTimeout(function () {
+    alert("Parabéns " + nome + "! A tua aposta está certa! Foram feitas " + Number(tentativas.innerText) + " tentativas e sobraram-te " + Number(saldo.innerText) + "$!");
+    }, 1900);
+	const vitoria = 20
+	const saldo_total = Number(saldo.innerText) + Number(vitoria)
+	saldo.innerText = saldo_total
+    valor_apostado.disabled=true
+	butao.disabled=true
+	} else {
+	DoAnimationTwo("red", 700)
+	const aposta = 10
+	const saldo_total = Number(saldo.innerText) - Number(aposta)
+	saldo.innerText = saldo_total
+	}
+	
+}
+
+function DoAnimation(cor, duracao) {
+const body = document.body;   
+body.style.transition = "background-color 1s";
+body.style.backgroundColor = cor;
+setTimeout(() => {
+    body.style.backgroundColor = "";
+}, duracao);
+}
+
+function DoAnimationTwo(cor, duracao) {
+const body = document.body;   
+body.style.transition = "background-color 1s";
+body.style.backgroundColor = cor;
+setTimeout(() => {
+    body.style.backgroundColor = "";
+}, duracao);
+}
+
+document.getElementById("aposta").addEventListener("change", function() {
+  let v = parseInt(this.value);
+  if (v < 1) {
+  this.value = 1
+  alert("Não pode escolher números a baixo de 1!")
+  }
+  if (v > 10) {
+  this.value = 10   
+  alert("Não pode escolher um número a cima de 10!")
+  }
+})
+
+function nota1() {
+const notaum = 1
+const saldo_total = Number(saldo.innerText) + Number(notaum)
+saldo.innerText = saldo_total
+}
+
+function nota5() {
+const notacinco = 5
+const saldo_total = Number(saldo.innerText) + Number(notacinco)
+saldo.innerText = saldo_total
+}
+
+function nota10() {
+const notadez = 10
+const saldo_total = Number(saldo.innerText) + Number(notadez)
+saldo.innerText = saldo_total
+}
+
+function nota20() {
+const notavinte = 20
+const saldo_total = Number(saldo.innerText) + Number(notavinte)
+saldo.innerText = saldo_total
+}
+
+function nota50() {
+const notacinquenta = 50
+const saldo_total = Number(saldo.innerText) + Number(notacinquenta)
+saldo.innerText = saldo_total
+}
+
+function tentativa() {
+const tentativa = 1
+const tentativas_totais = Number(tentativas.innerText) + Number(tentativa)
+tentativas.innerText = tentativas_totais
+}
+</script>
+</center>
+</body>
+</html>
